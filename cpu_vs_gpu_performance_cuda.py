@@ -13,7 +13,7 @@ import os, time, platform, random
 import torch
 import torch.nn as nn
 
-### Create functions
+### Create functions primarily for formatting
 
 
 # set up time formatting for measurement
