@@ -7,6 +7,7 @@
 # pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu128
 # conda install -c conda-forge transformers
 
+## Using the "pre-release" / nightly build of PyTorch - cu128 = CUDA 12.8 --- need this to make sure it works on GPU
 
 
 ## The main goal of this is as a proof of concept of sentiment analysis using the Roberta model.
@@ -21,9 +22,12 @@ import torch
 from math import ceil
 
 ## Check GPU set up
-use_gpu = torch.cuda.is_available()
+use_gpu = torch.cuda.is_available() ## This part is used later to run on GPU if CUDA is available. This code is designed for NVIDIA GPU
 device = 0 if use_gpu else -1                # 0 = first CUDA GPU, -1 = CPU
 dtype = torch.float16 if use_gpu else torch.float32
+    # this part is mostly about optimizing for GPU. Using 16 bits per number (aka "half precision") halves memory usage, which speeds up computation on GPUs optimzed for parallel processing
+    # NVIDIA GPUs are optimized for float16
+    # For CPU, beset to stick with 32
 
 print("CUDA available:", use_gpu)
 if use_gpu:
@@ -45,7 +49,8 @@ sentiment = pipeline(
     "sentiment-analysis",
     model=model,
     tokenizer=tokenizer,
-    device=device,           # forces CUDA:0 when GPU is present
+    device=device,           # forces CUDA:0 when GPU is present.
+    # The "device" in pipeline is the main part that makes it run on GPU. the part above just sets it to try GPU if there is CUDA available.
     truncation=True
 )
 
