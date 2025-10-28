@@ -1,4 +1,4 @@
-##### Proof of concept of AI detection using a Hugginface Model
+##### Proof of concept of AI detection using a Huggingface Model
 
 ### run in "torch_bench" environment
 # conda create -n torch_bench python=3.11 -y
